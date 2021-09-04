@@ -1,0 +1,24 @@
+.button {
+  padding: 15px;
+  box-sizing: border-box;
+  color: #ffffff;
+  font-size: 18px;
+  line-height: 22px;
+  background-color: #000000;
+  border: none;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: background-color .2s ease-in-out;
+}
+
+.button:hover,
+.button:focus-visible {
+  background-color: rgba(0, 0, 0, .8);
+}
+
+@media (max-width: 767px) {
+  .button {
+    font-size: 14px;
+    line-height: 17px;
+  }
+}

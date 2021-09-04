@@ -1,0 +1,11 @@
+.form-edit-profile__fields {
+  display: grid;
+  row-gap: 15px;
+  margin-bottom: 48px;
+}
+
+@media (max-width: 767px) {
+  .form-edit-profile__fields {
+    margin-bottom: 45px;
+  }
+}

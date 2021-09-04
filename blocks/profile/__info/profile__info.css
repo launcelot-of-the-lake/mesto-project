@@ -1,0 +1,14 @@
+.profile__info {
+  display: grid;
+  row-gap: 16px;
+  max-width: 336px;
+  width: 100%;
+}
+
+@media (max-width: 767px) {
+  .profile__info {
+    justify-content: center;
+    row-gap: 10px;
+    margin-bottom: 36px;
+  }
+}
