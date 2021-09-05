@@ -1,0 +1,34 @@
+.popup__close {
+  position: absolute;
+  bottom: 100%;
+  left: 100%;
+  display: flex;
+  margin-left: 8px;
+  margin-bottom: 8px;
+  padding: 0;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  transition: opacity .2s ease-in-out;
+}
+
+.popup__close:hover,
+.popup__close:focus-visible {
+  opacity: .6;
+}
+
+@media (max-width: 1023px) {
+  .popup__close {
+    left: unset;
+    right: 0;
+    margin: 0;
+    margin-bottom: 16px;
+  }
+}
+
+@media (max-width: 767px) {
+  .popup__close {
+    width: 20px;
+    height: 20px;
+  }
+}
