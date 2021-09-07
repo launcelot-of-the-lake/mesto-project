@@ -7,4 +7,4 @@
 * CSS, HTML
 * Адаптивная верстка. 
 
-Ссылка на проект: https://github.com/launcelot-of-the-lake/mesto-project
+Ссылка на проект: https://launcelot-of-the-lake.github.io/mesto-project/
