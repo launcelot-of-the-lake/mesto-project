@@ -36,168 +36,143 @@ const formAddElement = document.querySelector('.form-popup-add-card');
 const titleInput = formAddElement.querySelector('.form-popup-add-card__title');
 const imageInput = formAddElement.querySelector('.form-popup-add-card__image');
 
-const editButton = document.querySelector('.profile__edit-button');
-const addCardButton = document.querySelector('.profile__add-button');
+const buttonEditProfile = document.querySelector('.profile__edit-button');
+const buttonAddCard = document.querySelector('.profile__add-button');
 
-const elementsCardWrapper = document.querySelector('.elements');
+const cardsWrapperElement = document.querySelector('.elements');
+const templateCardElement = document.querySelector('#element-template');
 
 const popupElements = document.querySelectorAll('.popup');
+const popupEditCardElement = document.querySelector('#popup-edit-profile');
+const popupAddCardElement = document.querySelector('#popup-add-card');
+const popupGalleryElement = document.querySelector('#popup-gallery');
 
-const galleryImage = document.querySelector('.gallery__image');
-const galleryCaption = document.querySelector('.gallery__caption');
+const galleryImageElement = document.querySelector('.gallery__image');
+const galleryCaptionElement = document.querySelector('.gallery__caption');
 
-function openPopup(id) {
-  const popup = document.querySelector(`#${id}`);
-
-  if (!popup) return;
-
+function openPopup(popup) {
   popup.classList.add('popup_opened');
-  setTimeout(() => popup.classList.add('popup_visible'), 0);
 }
 
-function closePopup(id) {
-  const popup = document.querySelector(`#${id}`);
-
-  if (!popup) return;
-
-  popup.classList.remove('popup_visible');
-  popup.addEventListener('transitionend', () =>
-    (popup.classList.remove('popup_opened')), { once: true });
-}
-
-function formEditSubmitHandler(evt) {
-  evt.preventDefault();
-
-  nameElement.textContent = nameInput.value;
-  jobElement.textContent = jobInput.value;
-  closePopup('popup-edit-profile');
-}
-
-function formAddCardSubmitHandler(evt) {
-  evt.preventDefault();
-
-  addCard({
-    name: titleInput.value,
-    link: imageInput.value
-  });
-  evt.target.reset();
-  closePopup('popup-add-card');
-}
-
-function handleEditButton() {
-  nameInput.value = nameElement.textContent;
-  jobInput.value = jobElement.textContent;
-  openPopup('popup-edit-profile');
-}
-
-function handleAddCardButton() {
-  openPopup('popup-add-card');
+function closePopup(popup) {
+  popup.classList.remove('popup_opened')
 }
 
 function setGallery(data) {
   const { name, link } = data;
 
-  galleryImage.src = link;
-  galleryCaption.textContent = name;
-}
-
-function setEventsCard(card) {
-  const favoriteButton = card.querySelector('.element__favorite');
-  const removeButton = card.querySelector('.element__remove');
-  const linkImage = card.querySelector('.element__image-link');
-
-  favoriteButton.addEventListener('click', handleFavoriteButton);
-  removeButton.addEventListener('click', handleRemoveButton);
-  linkImage.addEventListener('click', handleLinkImage);
+  if (galleryImageElement.src !== link) galleryImageElement.src = '';
+  galleryImageElement.src = link;
+  galleryImageElement.alt = name;
+  galleryCaptionElement.textContent = name;
 }
 
 function handleFavoriteButton(evt) {
-  const button = evt.currentTarget;
+  const buttonElement = evt.currentTarget;
 
-  button.classList.toggle('element__favorite_active');
+  buttonElement.classList.toggle('element__favorite_active');
 }
 
 function handleRemoveButton(evt) {
-  const button = evt.currentTarget;
-  const parrent = button.closest('.element');
+  const buttonElement = evt.currentTarget;
+  const parrentElement = buttonElement.closest('.element');
 
-  parrent.remove();
+  removeCard(parrentElement);
 }
 
 function handleLinkImage(evt) {
   evt.preventDefault();
 
-  const image = evt.target;
+  const imageElement = evt.target;
 
   setGallery({
-    name: image.alt,
-    link: image.src
+    name: imageElement.alt,
+    link: imageElement.src
   });
-  openPopup('popup-gallery');
+
+  openPopup(popupGalleryElement);
 }
 
-function addCard(data) {
-  elementsCardWrapper.insertAdjacentHTML(
-    'afterbegin',
-    templateCard(data)
-  );
+function createCard(item) {
+  const { name, link } = item;
+  const cardElement = templateCardElement.content.cloneNode(true);
+  const imageLinkElement = cardElement.querySelector('.element__image-link');
+  const imageElement = cardElement.querySelector('.element__image');
+  const imageTitleElement = cardElement.querySelector('.element__title');
 
-  const card = document.querySelector('.element');
-  setEventsCard(card);
+  const favoriteButton = cardElement.querySelector('.element__favorite');
+  const removeButton = cardElement.querySelector('.element__remove');
+  const linkImage = cardElement.querySelector('.element__image-link');
+
+  imageLinkElement.href = link;
+  imageElement.src = link;
+  imageElement.alt = name;
+  imageTitleElement.textContent = name;
+
+  favoriteButton.addEventListener('click', handleFavoriteButton);
+  removeButton.addEventListener('click', handleRemoveButton);
+  linkImage.addEventListener('click', handleLinkImage);
+
+  return cardElement;
+}
+
+function addPrependCard(item) {
+  cardsWrapperElement.prepend(createCard(item));
+}
+
+function addAppendCard(item) {
+  cardsWrapperElement.append(createCard(item));
+}
+
+function removeCard(cardElement) {
+  cardElement.remove();
 }
 
 function updateCards() {
-  elementsCardWrapper.textContent = '';
-
-  elementsCardWrapper.insertAdjacentHTML(
-    'beforeend',
-    initialCards.map(templateCard).join('')
-  );
-
-  const cardElements = document.querySelectorAll('.element');
-  cardElements.forEach(setEventsCard);
+  initialCards.forEach(addAppendCard);
 }
 
-function templateCard(data) {
-  const { name, link } = data;
+function handleFormEdit(evt) {
+  evt.preventDefault();
 
-  return (
-    `
-    <article class="element">
-      <a class="element__image-link" href="${link}" target="_blank">
-        <img class="element__image" src="${link}" alt="${name}">
-      </a>
+  nameElement.textContent = nameInput.value;
+  jobElement.textContent = jobInput.value;
+  closePopup(popupEditCardElement);
+}
 
-      <footer class="element__footer">
-        <h3 class="element__title">${name}</h3>
+function handleFormAddCard(evt) {
+  evt.preventDefault();
 
-        <button class="element__favorite" type="button" title="Добавить в избранное">
-          <svg class="element__favorite-icon" width="22" height="19" viewBox="0 0 22 19" fill="none">
-            <path d="M19.7717 2.21518L19.7744 2.21779C21.7404 4.14248 21.7442 7.30216 19.7717 9.25255L10.9804 17.9453L2.21428 9.27757C1.27432 8.32745 0.75 7.0739 0.75 5.74496C0.75 4.4081 1.25733 3.15857 2.21143 2.21517L2.21144 2.21518L2.21408 2.21254C4.16486 0.264365 7.37312 0.260595 9.35012 2.23477L9.35011 2.23478L9.35274 2.23737L10.453 3.32531L10.9857 3.85202L11.513 3.31996L12.6105 2.21262C14.5865 0.26161 17.7969 0.262461 19.7717 2.21518Z" stroke="black" stroke-width="1.5"/>
-          </svg>
-        </button>
-      </footer>
+  addPrependCard({
+    name: titleInput.value,
+    link: imageInput.value
+  });
+  evt.target.reset();
+  closePopup(popupAddCardElement);
+}
 
-      <button class="element__remove">
-        <img class="element__remove-icon" src="images/trash.svg" alt="">
-      </button>
-    </article>
-    `
-  );
+function handleEditButton() {
+  nameInput.value = nameElement.textContent;
+  jobInput.value = jobElement.textContent;
+  openPopup(popupEditCardElement);
+}
+
+function handleAddCardButton() {
+  openPopup(popupAddCardElement);
 }
 
 popupElements.forEach((popup) => {
-  const closeButton = popup.querySelector('.popup__close');
+  const closeButtonElement = popup.querySelector('.popup__close');
 
-  if (!closeButton || !popup.id) return;
+  if (!closeButtonElement) return;
 
-  closeButton.addEventListener('click', () => closePopup(popup.id));
+  closeButtonElement.addEventListener('click', () => closePopup(popup));
 });
 
 updateCards();
 
-editButton.addEventListener('click', handleEditButton);
-addCardButton.addEventListener('click', handleAddCardButton);
+buttonEditProfile.addEventListener('click', handleEditButton);
+buttonAddCard.addEventListener('click', handleAddCardButton);
 
-formEditElement.addEventListener('submit', formEditSubmitHandler);
-formAddElement.addEventListener('submit', formAddCardSubmitHandler);
+formEditElement.addEventListener('submit', handleFormEdit);
+formAddElement.addEventListener('submit', handleFormAddCard);
