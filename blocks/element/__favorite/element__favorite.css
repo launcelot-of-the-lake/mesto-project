@@ -11,7 +11,3 @@
 .element__favorite:focus-visible {
   opacity: .5;
 }
-
-.element__favorite_active .element__favorite-icon {
-  fill: #000000;
-}

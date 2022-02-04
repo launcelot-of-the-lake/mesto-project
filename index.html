@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mesto</title>
   <link rel="stylesheet" href="pages/index.css">
+  <script defer src="scripts/index.js"></script>
 </head>
 <body>
   <div class="page">
@@ -36,87 +37,15 @@
         </button>
       </section>
 
-      <div class="elements container">
-        <article class="element">
-          <img class="element__image" src="images/element-1.jpg" alt="Церковь в Карачаевске">
-
-          <footer class="element__footer">
-            <h3 class="element__title">Карачаевск</h3>
-
-            <button class="element__favorite" type="button" title="Добавить в избранное">
-              <img class="element__favorite-icon" src="images/heart.svg" alt="">
-            </button>
-          </footer>
-        </article>
-
-        <article class="element">
-          <img class="element__image" src="images/element-2.jpg" alt="Гора Эльбрус">
-
-          <footer class="element__footer">
-            <h3 class="element__title">Гора Эльбрус</h3>
-
-            <button class="element__favorite" type="button" title="Добавить в избранное">
-              <img class="element__favorite-icon" src="images/heart.svg" alt="">
-            </button>
-          </footer>
-        </article>
-
-        <article class="element">
-          <img class="element__image" src="images/element-3.jpg" alt="Домбай">
-
-          <footer class="element__footer">
-            <h3 class="element__title">Домбай</h3>
-
-            <button class="element__favorite" type="button" title="Добавить в избранное">
-              <img class="element__favorite-icon" src="images/heart.svg" alt="">
-            </button>
-          </footer>
-        </article>
-
-        <article class="element">
-          <img class="element__image" src="images/element-2.jpg" alt="Гора Эльбрус">
-
-          <footer class="element__footer">
-            <h3 class="element__title">Гора Эльбрус</h3>
-
-            <button class="element__favorite" type="button" title="Добавить в избранное">
-              <img class="element__favorite-icon" src="images/heart.svg" alt="">
-            </button>
-          </footer>
-        </article>
-
-        <article class="element">
-          <img class="element__image" src="images/element-3.jpg" alt="Домбай">
-
-          <footer class="element__footer">
-            <h3 class="element__title">Домбай</h3>
-
-            <button class="element__favorite" type="button" title="Добавить в избранное">
-              <img class="element__favorite-icon" src="images/heart.svg" alt="">
-            </button>
-          </footer>
-        </article>
-
-        <article class="element">
-          <img class="element__image" src="images/element-1.jpg" alt="Карачаево-Черкесия">
-
-          <footer class="element__footer">
-            <h3 class="element__title">Карачаево-Черкесия</h3>
-
-            <button class="element__favorite" type="button" title="Добавить в избранное">
-              <img class="element__favorite-icon" src="images/heart.svg" alt="">
-            </button>
-          </footer>
-        </article>
-      </div>
+      <div class="elements container"></div>
     </main>
 
     <footer class="footer container">
       <p class="footer__copyright">© 2020 Mesto Russia</p>
     </footer>
 
-    <div class="popup">
-      <article> class="popup__container">
+    <div class="popup" id="popup-edit-profile">
+      <article class="popup__container">
         <button class="popup__close" type="button" title="Закрыть окно">
           <img class="popup__close-icon" src="images/close.svg" alt="">
         </button>
@@ -126,14 +55,14 @@
         <form class="form-edit-profile" action="/" name = "editProfile">
           <div class="form-edit-profile__fields">
             <input
-              class="input"
+              class="form-edit-profile__name input"
               type="text"
               name="name"
               id="name"
               value="Жак-Ив Кусто"
             >
             <input
-              class="input"
+              class="form-edit-profile__job input"
               type="text"
               name="description"
               id="description"
@@ -143,7 +72,51 @@
 
           <button class="form-edit-profile__submit button" type="submit">Сохранить</button>
         </form>
-      </article>>
+      </article>
+    </div>
+
+    <div class="popup" id="popup-add-card">
+      <article class="popup__container">
+        <button class="popup__close" type="button" title="Закрыть окно">
+          <img class="popup__close-icon" src="images/close.svg" alt="">
+        </button>
+
+        <h2 class="popup__title">Новое место</h2>
+
+        <form class="form-popup-add-card form-edit-profil" action="/" name="addCard">
+          <div class="form-edit-profile__fields">
+            <input
+              class="form-popup-add-card__title input"
+              type="text"
+              name="title"
+              id="title"
+              placeholder="Название"
+            >
+            <input
+              class="form-popup-add-card__image input"
+              type="text"
+              name="image"
+              id="image"
+              placeholder="Ссылка на картинку"
+            >
+          </div>
+
+          <button class="form-edit-profile__submit button" type="submit">Сохранить</button>
+        </form>
+      </article>
+    </div>
+
+    <div class="popup" id="popup-gallery">
+      <div class="popup__container popup__container_type_gallery">
+        <button class="popup__close" type="button" title="Закрыть окно">
+          <img class="popup__close-icon" src="images/close.svg" alt="">
+        </button>
+
+        <figure class="gallery">
+          <img class="gallery__image" src="https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg" alt="">
+          <figcaption class="gallery__caption">Архыз</figcaption>
+        </figure>
+      </div>
     </div>
   </div>
 </body>

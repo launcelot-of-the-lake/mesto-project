@@ -1,0 +1,11 @@
+.gallery__image {
+  display: block;
+  max-width: 75vw;
+  max-height: 75vh;
+}
+
+@media (max-width: 767px) {
+  .gallery__image {
+    max-width: 100%;
+  }
+}

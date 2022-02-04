@@ -1,0 +1,15 @@
+.popup__container_type_gallery {
+  padding: 0;
+  max-width: unset;
+  width: auto;
+  background-color: transparent;
+  border-radius: unset;
+}
+
+@media (max-width: 767px) {
+  .popup__container_type_gallery {
+    padding: 0;
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+}

@@ -1,0 +1,18 @@
+.element__remove {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  padding: 0;
+  padding-top: 20px;
+  padding-right: 20px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  transition: opacity .2s ease-in-out;
+}
+
+.element__remove:hover,
+.element__remove:focus-visible {
+  opacity: .5;
+}
