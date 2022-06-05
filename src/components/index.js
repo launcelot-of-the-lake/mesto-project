@@ -1,6 +1,7 @@
 import { openPopup, closePopup } from './modal.js';
 import { addPrependCard, updateCards } from './card.js';
-import { enableValidation } from './validate.js';
+import { enableValidation, toggleButtonState } from './validate.js';
+import { validationOptions } from './utils/constants.js';
 
 const formEditElement = document.querySelector('#form-edit-profile');
 const nameInput = formEditElement.name;
@@ -32,6 +33,12 @@ function handleFormAddCard(evt) {
   });
   evt.target.reset();
   closePopup(popupAddCardElement);
+
+  toggleButtonState(
+    Array.from(evt.target.querySelectorAll(validationOptions.inputSelector)),
+    evt.target.querySelector(validationOptions.submitButtonSelector),
+    validationOptions
+  );
 }
 
 function handleEditButton() {
@@ -52,11 +59,4 @@ formAddElement.addEventListener('submit', handleFormAddCard);
 
 updateCards();
 
-enableValidation({
-  formSelector: '.form',
-  inputSelector: '.form__input',
-  submitButtonSelector: '.form__submit',
-  inactiveButtonClass: 'form__submit_inactive',
-  inputErrorClass: 'form__input-error_active',
-  errorClass: 'form__input_type_error'
-});
+enableValidation(validationOptions);
