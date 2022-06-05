@@ -1,23 +1,25 @@
-.button {
-  padding: 15px;
+.form__submit {
+  margin-top: calc(48px - 30px);
+  padding: 13px;
+  width: 100%;
   box-sizing: border-box;
   color: #ffffff;
   font-size: 18px;
   line-height: 22px;
   background-color: #000000;
-  border: none;
+  border: 1px  solid #000000;
   border-radius: 2px;
   cursor: pointer;
   transition: background-color .2s ease-in-out;
 }
 
-.button:hover,
-.button:focus-visible {
+.form__submit:hover,
+.form__submit:focus-visible {
   background-color: rgba(0, 0, 0, .8);
 }
 
 @media (max-width: 767px) {
-  .button {
+  .form__submit {
     font-size: 14px;
     line-height: 17px;
   }

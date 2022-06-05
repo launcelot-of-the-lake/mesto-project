@@ -4,9 +4,6 @@
 @import url('../blocks/page/page.css');
 @import url('../blocks/container/container.css');
 
-@import url('../blocks/button/button.css');
-@import url('../blocks/input/input.css');
-
 @import url('../blocks/header/header.css');
 @import url('../blocks/header/__logo/header__logo.css');
 @import url('../blocks/header/__logo-image/header__logo-image.css');
@@ -35,9 +32,14 @@
 @import url('../blocks/footer/footer.css');
 @import url('../blocks/footer/__copyright/footer__copyright.css');
 
-@import url('../blocks/form-edit-profile/form-edit-profile.css');
-@import url('../blocks/form-edit-profile/__fields/form-edit-profile__fields.css');
-@import url('../blocks/form-edit-profile/__submit/form-edit-profile__submit.css');
+@import url('../blocks/form/form.css');
+@import url('../blocks/form/__field/form__field.css');
+@import url('../blocks/form/__input/form__input.css');
+@import url('../blocks/form/__input/_type/form__input_type_error.css');
+@import url('../blocks/form/__input-error/form__input-error.css');
+@import url('../blocks/form/__input-error/_active/form__input-error_active.css');
+@import url('../blocks/form/__submit/form__submit.css');
+@import url('../blocks/form/__submit/_inactive/form__submit_inactive.css');
 
 @import url('../blocks/gallery/gallery.css');
 @import url('../blocks/gallery/__image/gallery__image.css');
