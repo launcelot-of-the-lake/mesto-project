@@ -1,22 +1,14 @@
+import { getCards, postCard, deleteCard, putLike, deleteLike } from './api.js';
+import { getId } from './profile.js';
 import { setGallery } from './gallery.js';
 import { openPopup } from './modal.js';
-import { initialCards } from './utils/constants.js';
 
 const cardsWrapperElement = document.querySelector('.elements');
 const templateCardElement = document.querySelector('#element-template');
 const popupGalleryElement = document.querySelector('#popup-gallery');
 
-function handleFavoriteButton(evt) {
-  const buttonElement = evt.currentTarget;
-
-  buttonElement.classList.toggle('element__favorite_active');
-}
-
-function handleRemoveButton(evt) {
-  const buttonElement = evt.currentTarget;
-  const parrentElement = buttonElement.closest('.element');
-
-  removeCard(parrentElement);
+function toggleFavorite(favoriteElement) {
+  favoriteElement.classList.toggle('element__favorite_active');
 }
 
 function handleLinkImage(evt) {
@@ -32,12 +24,16 @@ function handleLinkImage(evt) {
   openPopup(popupGalleryElement);
 }
 
-function createCard(item) {
-  const { name, link } = item;
+function createCard({ _id: idCard, likes = [], name = '', link = '', owner = {} }) {
+  const id = getId();
+  const { _id: ownerId } = owner;
+  let isLiked = likes.some((like) => like._id === id);
+
   const cardElement = templateCardElement.content.cloneNode(true);
   const imageLinkElement = cardElement.querySelector('.element__image-link');
   const imageElement = cardElement.querySelector('.element__image');
   const imageTitleElement = cardElement.querySelector('.element__title');
+  const likeElement = cardElement.querySelector('.element__favorite-counter');
 
   const favoriteButton = cardElement.querySelector('.element__favorite');
   const removeButton = cardElement.querySelector('.element__remove');
@@ -47,9 +43,51 @@ function createCard(item) {
   imageElement.src = link;
   imageElement.alt = name;
   imageTitleElement.textContent = name;
+  likeElement.textContent = likes.length;
 
-  favoriteButton.addEventListener('click', handleFavoriteButton);
-  removeButton.addEventListener('click', handleRemoveButton);
+  if (isLiked) toggleFavorite(favoriteButton);
+
+  favoriteButton.addEventListener('click', () => {
+    if (isLiked) {
+      deleteLike(idCard)
+        .then(({ likes = [] }) => {
+          isLiked = false;
+          likeElement.textContent = likes.length;
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    } else {
+      putLike(idCard)
+        .then(({ likes = [] }) => {
+          isLiked = true;
+          likeElement.textContent = likes.length;
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
+
+    toggleFavorite(favoriteButton);
+  });
+
+  if (id !== ownerId) {
+    removeButton.remove();
+  } else {
+    removeButton.addEventListener('click', (evt) => {
+      const buttonElement = evt.currentTarget;
+      const parrentElement = buttonElement.closest('.element');
+
+      deleteCard(idCard)
+        .then(() => {
+          removeCard(parrentElement);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    });
+  }
+
   linkImage.addEventListener('click', handleLinkImage);
 
   return cardElement;
@@ -67,6 +105,28 @@ function removeCard(cardElement) {
   cardElement.remove();
 }
 
-export function updateCards() {
-  initialCards.forEach(addAppendCard);
+export function initCards() {
+  return new Promise((resolve, reject) => {
+    getCards()
+      .then((cards = []) => {
+        cards.forEach(addAppendCard);
+        resolve();
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+}
+
+export function updateCard(name, link) {
+  return new Promise((resolve, reject) => {
+    postCard(name, link)
+      .then((data) => {
+        addPrependCard(data);
+        resolve();
+      })
+      .catch((err) => {
+        reject(err)
+      });
+  });
 }
