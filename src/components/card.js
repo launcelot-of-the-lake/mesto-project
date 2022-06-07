@@ -1,4 +1,4 @@
-import { getCards, postCard, deleteCard, putLike, deleteLike } from './api.js';
+import { deleteCard, putLike, deleteLike } from './api.js';
 import { getId } from './profile.js';
 import { setGallery } from './gallery.js';
 import { openPopup } from './modal.js';
@@ -97,36 +97,10 @@ export function addPrependCard(item) {
   cardsWrapperElement.prepend(createCard(item));
 }
 
-function addAppendCard(item) {
+export function addAppendCard(item) {
   cardsWrapperElement.append(createCard(item));
 }
 
 function removeCard(cardElement) {
   cardElement.remove();
-}
-
-export function initCards() {
-  return new Promise((resolve, reject) => {
-    getCards()
-      .then((cards = []) => {
-        cards.forEach(addAppendCard);
-        resolve();
-      })
-      .catch((err) => {
-        reject(err);
-      });
-  });
-}
-
-export function updateCard(name, link) {
-  return new Promise((resolve, reject) => {
-    postCard(name, link)
-      .then((data) => {
-        addPrependCard(data);
-        resolve();
-      })
-      .catch((err) => {
-        reject(err)
-      });
-  });
 }

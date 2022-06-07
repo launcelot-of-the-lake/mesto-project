@@ -64,4 +64,3 @@ export function deleteLike(id) {
     method: 'DELETE',
   });
 }
-// Jacques Cousteau  Sailor, researcher

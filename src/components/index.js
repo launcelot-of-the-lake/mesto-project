@@ -7,9 +7,10 @@ import {
   updateProfile,
   updateAvatar
 } from './profile.js';
-import { initCards, updateCard } from './card.js';
+import { addAppendCard, addPrependCard  } from './card.js';
 import { enableValidation, toggleButtonState } from './validate.js';
 import { validationOptions } from './utils/constants.js';
+import { getCards, postCard } from './api.js';
 
 const formEditElement = document.querySelector('#form-edit-profile');
 const nameInput = formEditElement.name;
@@ -30,17 +31,45 @@ const popupEditCardElement = document.querySelector('#popup-edit-profile');
 const popupEditAvatarElement = document.querySelector('#popup-edit-avatar');
 const popupAddCardElement = document.querySelector('#popup-add-card');
 
+function initCards() {
+  return new Promise((resolve, reject) => {
+    getCards()
+      .then((cards = []) => {
+        cards.forEach(addAppendCard);
+        resolve();
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+}
+
+function updateCard(name, link) {
+  return new Promise((resolve, reject) => {
+    postCard(name, link)
+      .then((data) => {
+        addPrependCard(data);
+        resolve();
+      })
+      .catch((err) => {
+        reject(err)
+      });
+  });
+}
+
 function handleFormEdit(evt) {
   const submitButton = evt.target.querySelector(validationOptions.submitButtonSelector);
 
   submitButton.textContent = 'Сохранение...';
   updateProfile(nameInput.value, jobInput.value)
     .then(() => {
-      submitButton.textContent = 'Сохранить';
       closePopup(popupEditCardElement);
     })
     .catch((err) => {
       console.error(err);
+    })
+    .finally(() => {
+      submitButton.textContent = 'Сохранить';
     });
 }
 
@@ -50,11 +79,13 @@ function handleAvatarEdit(evt) {
   submitButton.textContent = 'Сохранение...';
   updateAvatar(avatarInput.value)
     .then(() => {
-      submitButton.textContent = 'Сохранить';
       closePopup(popupEditAvatarElement);
     })
     .catch((err) => {
       console.error(err);
+    })
+    .finally(() => {
+      submitButton.textContent = 'Сохранить';
     });
 }
 
@@ -72,11 +103,12 @@ function handleFormAddCard(evt) {
         submitButton,
         validationOptions
       );
-
-      submitButton.textContent = 'Сохранить';
     })
     .catch((err) => {
       console.error(err);
+    })
+    .finally(() => {
+      submitButton.textContent = 'Сохранить';
     });
 }
 
