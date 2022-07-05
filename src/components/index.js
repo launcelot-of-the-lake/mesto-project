@@ -21,6 +21,8 @@ const userInfo = new UserInfo({
   api
 });
 
+userInfo.initialize();
+
 // const formEditElement = document.querySelector('#form-edit-profile');
 // const nameInput = formEditElement.name;
 // const jobInput = formEditElement.description;
