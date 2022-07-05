@@ -10,7 +10,7 @@
 // import { addAppendCard, addPrependCard  } from './card.js';
 // import { enableValidation, toggleButtonState } from './validate.js';
 // import { validationOptions } from './utils/constants.js';
-import Api from './api.js';
+import Api from './Api.js';
 import { apiOptions } from './utils/constants.js';
 import UserInfo from './UserInfo.js';
 

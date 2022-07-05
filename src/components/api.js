@@ -3,18 +3,6 @@ class Api {
     this._options = options;
   }
 
-  _fetchData(url, options) {
-    return fetch(`${this._options.baseUrl}/${url}`, {
-      headers: this._options.headers,
-      ...options
-    })
-      .then(res => {
-        if (res.ok) return res.json();
-
-        return Promise.reject(`Ошибка: ${res.status}.`);
-      });
-  }
-
   getUser() {
     return this._fetchData('users/me');
   }
@@ -60,6 +48,18 @@ class Api {
     return this._fetchData(`cards/likes/${id}`, {
       method: 'DELETE',
     });
+  }
+
+  _fetchData(url, options) {
+    return fetch(`${this._options.baseUrl}/${url}`, {
+      headers: this._options.headers,
+      ...options
+    })
+      .then(res => {
+        if (res.ok) return res.json();
+
+        return Promise.reject(`Ошибка: ${res.status}.`);
+      });
   }
 }
 
