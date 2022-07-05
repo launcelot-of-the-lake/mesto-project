@@ -1,144 +1,149 @@
-import { openPopup, closePopup } from './modal.js';
-import {
-  initProfile,
-  getAvatar,
-  getName,
-  getAbout,
-  updateProfile,
-  updateAvatar
-} from './profile.js';
-import { addAppendCard, addPrependCard  } from './card.js';
-import { enableValidation, toggleButtonState } from './validate.js';
-import { validationOptions } from './utils/constants.js';
-import { getCards, postCard } from './api.js';
+// import { openPopup, closePopup } from './modal.js';
+// import {
+//   initProfile,
+//   getAvatar,
+//   getName,
+//   getAbout,
+//   updateProfile,
+//   updateAvatar
+// } from './profile.js';
+// import { addAppendCard, addPrependCard  } from './card.js';
+// import { enableValidation, toggleButtonState } from './validate.js';
+// import { validationOptions } from './utils/constants.js';
+import Api from './api.js';
+import { apiOptions } from './utils/constants.js';
 
-const formEditElement = document.querySelector('#form-edit-profile');
-const nameInput = formEditElement.name;
-const jobInput = formEditElement.description;
+const api = new Api(apiOptions);
 
-const formEditAvatar = document.querySelector('#form-edit-avatar');
-const avatarInput = formEditAvatar.avatar;
+api.getUser().then(console.log);
 
-const formAddElement = document.querySelector('#form-add-card');
-const titleInput = formAddElement.title;
-const imageInput = formAddElement.image;
+// const formEditElement = document.querySelector('#form-edit-profile');
+// const nameInput = formEditElement.name;
+// const jobInput = formEditElement.description;
 
-const buttonEditProfile = document.querySelector('.profile__edit-button');
-const buttonAvatar = document.querySelector('.profile__avatar');
-const buttonAddCard = document.querySelector('.profile__add-button');
+// const formEditAvatar = document.querySelector('#form-edit-avatar');
+// const avatarInput = formEditAvatar.avatar;
 
-const popupEditCardElement = document.querySelector('#popup-edit-profile');
-const popupEditAvatarElement = document.querySelector('#popup-edit-avatar');
-const popupAddCardElement = document.querySelector('#popup-add-card');
+// const formAddElement = document.querySelector('#form-add-card');
+// const titleInput = formAddElement.title;
+// const imageInput = formAddElement.image;
 
-function initCards() {
-  return new Promise((resolve, reject) => {
-    getCards()
-      .then((cards = []) => {
-        cards.forEach(addAppendCard);
-        resolve();
-      })
-      .catch((err) => {
-        reject(err);
-      });
-  });
-}
+// const buttonEditProfile = document.querySelector('.profile__edit-button');
+// const buttonAvatar = document.querySelector('.profile__avatar');
+// const buttonAddCard = document.querySelector('.profile__add-button');
 
-function updateCard(name, link) {
-  return new Promise((resolve, reject) => {
-    postCard(name, link)
-      .then((data) => {
-        addPrependCard(data);
-        resolve();
-      })
-      .catch((err) => {
-        reject(err)
-      });
-  });
-}
+// const popupEditCardElement = document.querySelector('#popup-edit-profile');
+// const popupEditAvatarElement = document.querySelector('#popup-edit-avatar');
+// const popupAddCardElement = document.querySelector('#popup-add-card');
 
-function handleFormEdit(evt) {
-  const submitButton = evt.target.querySelector(validationOptions.submitButtonSelector);
+// function initCards() {
+//   return new Promise((resolve, reject) => {
+//     getCards()
+//       .then((cards = []) => {
+//         cards.forEach(addAppendCard);
+//         resolve();
+//       })
+//       .catch((err) => {
+//         reject(err);
+//       });
+//   });
+// }
 
-  submitButton.textContent = 'Сохранение...';
-  updateProfile(nameInput.value, jobInput.value)
-    .then(() => {
-      closePopup(popupEditCardElement);
-    })
-    .catch((err) => {
-      console.error(err);
-    })
-    .finally(() => {
-      submitButton.textContent = 'Сохранить';
-    });
-}
+// function updateCard(name, link) {
+//   return new Promise((resolve, reject) => {
+//     postCard(name, link)
+//       .then((data) => {
+//         addPrependCard(data);
+//         resolve();
+//       })
+//       .catch((err) => {
+//         reject(err)
+//       });
+//   });
+// }
 
-function handleAvatarEdit(evt) {
-  const submitButton = evt.target.querySelector(validationOptions.submitButtonSelector);
+// function handleFormEdit(evt) {
+//   const submitButton = evt.target.querySelector(validationOptions.submitButtonSelector);
 
-  submitButton.textContent = 'Сохранение...';
-  updateAvatar(avatarInput.value)
-    .then(() => {
-      closePopup(popupEditAvatarElement);
-    })
-    .catch((err) => {
-      console.error(err);
-    })
-    .finally(() => {
-      submitButton.textContent = 'Сохранить';
-    });
-}
+//   submitButton.textContent = 'Сохранение...';
+//   updateProfile(nameInput.value, jobInput.value)
+//     .then(() => {
+//       closePopup(popupEditCardElement);
+//     })
+//     .catch((err) => {
+//       console.error(err);
+//     })
+//     .finally(() => {
+//       submitButton.textContent = 'Сохранить';
+//     });
+// }
 
-function handleFormAddCard(evt) {
-  const submitButton = evt.target.querySelector(validationOptions.submitButtonSelector);
+// function handleAvatarEdit(evt) {
+//   const submitButton = evt.target.querySelector(validationOptions.submitButtonSelector);
 
-  submitButton.textContent = 'Сохранение...';
-  updateCard(titleInput.value, imageInput.value)
-    .then(() => {
-      evt.target.reset();
-      closePopup(popupAddCardElement);
+//   submitButton.textContent = 'Сохранение...';
+//   updateAvatar(avatarInput.value)
+//     .then(() => {
+//       closePopup(popupEditAvatarElement);
+//     })
+//     .catch((err) => {
+//       console.error(err);
+//     })
+//     .finally(() => {
+//       submitButton.textContent = 'Сохранить';
+//     });
+// }
 
-      toggleButtonState(
-        Array.from(evt.target.querySelectorAll(validationOptions.inputSelector)),
-        submitButton,
-        validationOptions
-      );
-    })
-    .catch((err) => {
-      console.error(err);
-    })
-    .finally(() => {
-      submitButton.textContent = 'Сохранить';
-    });
-}
+// function handleFormAddCard(evt) {
+//   const submitButton = evt.target.querySelector(validationOptions.submitButtonSelector);
 
-function handleEditButton() {
-  nameInput.value = getName();
-  jobInput.value = getAbout();
+//   submitButton.textContent = 'Сохранение...';
+//   updateCard(titleInput.value, imageInput.value)
+//     .then(() => {
+//       evt.target.reset();
+//       closePopup(popupAddCardElement);
 
-  openPopup(popupEditCardElement);
-}
+//       toggleButtonState(
+//         Array.from(evt.target.querySelectorAll(validationOptions.inputSelector)),
+//         submitButton,
+//         validationOptions
+//       );
+//     })
+//     .catch((err) => {
+//       console.error(err);
+//     })
+//     .finally(() => {
+//       submitButton.textContent = 'Сохранить';
+//     });
+// }
 
-function handleAvatarEditButton() {
-  avatarInput.value = getAvatar();
+// function handleEditButton() {
+//   nameInput.value = getName();
+//   jobInput.value = getAbout();
 
-  openPopup(popupEditAvatarElement);
-}
+//   openPopup(popupEditCardElement);
+// }
 
-function handleAddCardButton() {
-  openPopup(popupAddCardElement);
-}
+// function handleAvatarEditButton() {
+//   avatarInput.value = getAvatar();
 
-buttonEditProfile.addEventListener('click', handleEditButton);
-buttonAvatar.addEventListener('click', handleAvatarEditButton);
-buttonAddCard.addEventListener('click', handleAddCardButton);
+//   openPopup(popupEditAvatarElement);
+// }
 
-formEditElement.addEventListener('submit', handleFormEdit);
-formEditAvatar.addEventListener('submit', handleAvatarEdit);
-formAddElement.addEventListener('submit', handleFormAddCard);
+// function handleAddCardButton() {
+//   openPopup(popupAddCardElement);
+// }
 
-Promise.all([initProfile(), initCards()]).catch((err) => {
-  console.error(err);
-});
+// buttonEditProfile.addEventListener('click', handleEditButton);
+// buttonAvatar.addEventListener('click', handleAvatarEditButton);
+// buttonAddCard.addEventListener('click', handleAddCardButton);
 
-enableValidation(validationOptions);
+// formEditElement.addEventListener('submit', handleFormEdit);
+// formEditAvatar.addEventListener('submit', handleAvatarEdit);
+// formAddElement.addEventListener('submit', handleFormAddCard);
+
+// Promise.all([initProfile(), initCards()]).catch((err) => {
+//   console.error(err);
+// });
+
+// enableValidation(validationOptions);

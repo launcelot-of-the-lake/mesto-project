@@ -33,3 +33,11 @@ export const validationOptions = {
   inputErrorClass: 'form__input-error_active',
   errorClass: 'form__input_type_error'
 };
+
+export const apiOptions = {
+  baseUrl: 'https://nomoreparties.co/v1/plus-cohort-10',
+  headers: {
+    authorization: '60b3afb0-0e60-4248-a05f-bc2ccdba9d9a',
+    'Content-Type': 'application/json'
+  }
+};
