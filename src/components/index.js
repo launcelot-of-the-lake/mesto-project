@@ -12,10 +12,14 @@
 // import { validationOptions } from './utils/constants.js';
 import Api from './api.js';
 import { apiOptions } from './utils/constants.js';
+import UserInfo from './UserInfo.js';
 
 const api = new Api(apiOptions);
-
-api.getUser().then(console.log);
+const userInfo = new UserInfo({
+  nameSelector: '.profile__title',
+  aboutSelector: '.profile__description',
+  api
+});
 
 // const formEditElement = document.querySelector('#form-edit-profile');
 // const nameInput = formEditElement.name;
